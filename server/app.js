@@ -9,10 +9,18 @@ const mongoose = require('mongoose');
 const app = express();
 
 // connect to mlab database
-mongoose.connect('mongodb+srv://myproject:street2133@cluster0.nwerd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
-mongoose.connection.once('open', () => {
-  console.log("connected to db")
-});
+const connectDB = async () => {
+  try {
+    const connected = await mongoose.connect("mongodb+srv://admin:street2133@cluster0.kfw0m.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+    console.log("db connected");
+
+  } catch (error) {
+    console.log(error.message);
+    process.exit(1); // excit the process when failed
+  }
+}
+
+connectDB();
 
 app.use('/graphql', graphqlHTTP({
   // add options to handle graphql requests
@@ -20,6 +28,7 @@ app.use('/graphql', graphqlHTTP({
   // rootValue: root,
   graphiql: true,
 }));
+
 
 
 app.listen(4000, () => {
